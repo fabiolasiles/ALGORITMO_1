@@ -61,7 +61,7 @@ bool validarCalentarProducto(char opcionQuintaPregunta){
 void preguntaCalentarSandwich(char* opcionQuintaPregunta){
     while(!validarCalentarProducto(*opcionQuintaPregunta)){
         printf("¿Deseas tu chambuchito caliente?[S/N]\n");
-        scanf(" %c\n",opcionQuintaPregunta);
+        scanf(" %c",opcionQuintaPregunta);
     }
        
 }
@@ -249,12 +249,15 @@ int preguntaMedidaSandwich( int* opcionPrimeraPregunta){
 
 /*
  * PRE:-
- * POST: La funcion devuelve "true" si el numero ingresado esta entre el rango de MEDIDA_MINIMA y MEDIDA_MAXIMA, en caso contrario devuelve "false".
+ * POST: La funcion devuelve el precio total del sandwich.
  */
-//int calculartPrecioSandwich(){
+int calculartPrecioSandwich(int costoPan,int costoProteina,int costoQueso,int primerRespuesta,int* precioTotal){
 
-
-//}
+    float totalIngredientes = (float)(costoProteina + costoPan + costoQueso);
+    float primerTotal= VALOR_VENTA * (float)primerRespuesta;
+    (*precioTotal) = (int)(totalIngredientes*primerTotal);
+    return (*precioTotal);
+}
 
 
 
@@ -278,36 +281,25 @@ int preguntaMedidaSandwich( int* opcionPrimeraPregunta){
     int precioTotal = 0;
 
     primerRespuesta = preguntaMedidaSandwich(&opcionPrimeraPregunta);
-    printf(" %i\n",primerRespuesta);
 
     segundaRespuesta = preguntaPanSandwich(&opcionSegundaPregunta);
     costoPan = evaluarCostoPan(&segundaRespuesta,&costoPan);
-    printf(" %i\n",costoPan);
 
     tercerRespuesta = preguntaQuesoSandwich(&opcionTercerPregunta);
     costoQueso = evaluarCostoQueso(&tercerRespuesta,&costoQueso);
-    printf(" %i\n",costoQueso);
 
     cuartaRespuesta = preguntaProteinaSandwich(&opcionCuartaPregunta);
     costoProteina = evaluarCostoProteina(&cuartaRespuesta,&costoProteina);
-    printf(" %i\n",costoProteina);
-
-    
-    
 
     if (cuartaRespuesta == ATUN){
-        float totalIngredientes = (float)(costoProteina + costoPan + costoQueso);
-        float primerTotal= VALOR_VENTA * (float)primerRespuesta;
-        precioTotal = (int)(totalIngredientes*primerTotal);
-        printf("%i\n",precioTotal);
+        precioTotal = calculartPrecioSandwich(costoPan,costoProteina,costoQueso,primerRespuesta,&precioTotal);
+        printf("-%i-\n",precioTotal);
 
     }else{
 
         preguntaCalentarSandwich(&opcionQuintaPregunta);
-        float totalIngredientes = (float)(costoProteina + costoPan + costoQueso);
-        float primerTotal= VALOR_VENTA * (float)primerRespuesta;
-        precioTotal = (int)(totalIngredientes*primerTotal);
-        printf("%i\n",precioTotal);
+        precioTotal = calculartPrecioSandwich(costoPan,costoProteina,costoQueso,primerRespuesta,&precioTotal);
+        printf("-%i-\n",precioTotal);
     }
     
  }
